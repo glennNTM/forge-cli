@@ -20,6 +20,10 @@ uv pip install -e .
 forge new my_project
 ```
 
+Follow the interactive prompts to select:
+- Project type: From Scratch, FastAPI, Flask or Django
+- Test library: pytest, unittest, doctest or none
+
 ## License
 
 MIT
