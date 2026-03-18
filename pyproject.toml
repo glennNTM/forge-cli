@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "pyfiglet>=1.0.4",
     "rich>=14.3.3",
     "typer>=0.24.1",
 ]
@@ -21,4 +22,5 @@ members = [
     "tmp/my_api",
     "tmp/my_api/flask_gpt",
     "tmp/todo",
+    "opp",
 ]
