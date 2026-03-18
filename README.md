@@ -1,29 +1,13 @@
-# 🔥 Forge CLI
+# Forge CLI
 
-> Modern Python project scaffolding — inspired by Laravel Artisan & create-next-app.
+A command-line tool for scaffolding Python projects.
 
-Forge CLI lets you spin up Python projects in seconds with an interactive, guided experience.
+## Requirements
 
-## ✨ Features
+- Python 3.11+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
-- Interactive project type selection
-- Built-in support for **FastAPI**, **Flask**, **Django** and bare Python
-- Powered by [`uv`](https://github.com/astral-sh/uv) for fast dependency management
-- Beautiful terminal UI with [`Rich`](https://github.com/Textualize/rich)
-
-## 🚀 Installation
-
-> Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/getting-started/installation/)
-```bash
-uv tool install forge-cli
-```
-
-## 📦 Usage
-```bash
-forge new my_project
-```
-
-## 🛠️ Dev setup
+## Dev setup
 ```bash
 git clone https://github.com/<username>/forge-cli
 cd forge-cli
@@ -31,16 +15,11 @@ uv sync
 uv pip install -e .
 ```
 
-## 📋 Roadmap
+## Usage
+```bash
+forge new my_project
+```
 
-- [ ] `From Scratch` template
-- [ ] `FastAPI` template
-- [ ] `Flask` template
-- [ ] `Django` template
-- [ ] Docker support
-- [ ] Auth boilerplate
-- [ ] Plugin system
-
-## 📄 License
+## License
 
 MIT
