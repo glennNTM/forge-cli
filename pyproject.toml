@@ -10,3 +10,12 @@ dependencies = [
 ]
 [project.scripts]
 forge = "forge.cli:app"
+
+[tool.uv.workspace]
+members = [
+    "new",
+    "ne",
+    "flaskgpt",
+    "my_api",
+    "weather_app",
+]
