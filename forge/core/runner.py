@@ -1,3 +1,4 @@
+import os
 import subprocess
 from rich.console import Console
 
@@ -19,22 +20,25 @@ def run(command: str, cwd: str = None):
 
 
 def run_command(project_name: str, project_type: str, test_library: str):
+    base_dir = os.getcwd()
+    project_path = os.path.join(base_dir, project_name)
+
     console.print(f"\nInitializing project [bold]{project_name}[/bold]...")
-    run(f"uv init {project_name}")
+    run(f"uv init {project_name}", cwd=base_dir)
 
     if project_type == "FastAPI":
         console.print("Installing FastAPI and uvicorn...")
-        run("uv add fastapi uvicorn", cwd=project_name)
+        run("uv add fastapi uvicorn", cwd=project_path)
 
     elif project_type == "Flask":
         console.print("Installing Flask...")
-        run("uv add flask", cwd=project_name)
+        run("uv add flask", cwd=project_path)
 
     elif project_type == "Django":
         console.print("Installing Django...")
-        run("uv add django", cwd=project_name)
-        run("uv run django-admin startproject core .", cwd=project_name)
+        run("uv add django", cwd=project_path)
+        run("uv run django-admin startproject core .", cwd=project_path)
 
     if test_library not in STDLIB_TEST_LIBS:
         console.print(f"Installing {test_library}...")
-        run(f"uv add {test_library} --dev", cwd=project_name)
+        run(f"uv add {test_library} --dev", cwd=project_path)
