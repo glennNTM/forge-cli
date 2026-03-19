@@ -52,4 +52,4 @@ def ask_docker() -> bool:
         default="2"
     )
 
-    return choice
+    return choice == "1"
