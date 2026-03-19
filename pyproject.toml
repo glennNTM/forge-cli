@@ -23,4 +23,5 @@ members = [
     "tmp/my_api/flask_gpt",
     "tmp/todo",
     "opp",
+    "tmp/flask_bot",
 ]

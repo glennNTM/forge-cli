@@ -1,5 +1,7 @@
 import os
 from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
 
 console = Console()
 
@@ -73,19 +75,23 @@ def create_template(project_name: str, project_type: str, test_library: str):
 
 
 def _print_next_steps(project_name: str, project_type: str):
-    console.print("\nNext steps:\n")
-    console.print(f"  cd {project_name}")
-
     if project_type == "FastAPI":
-        console.print("  uv run uvicorn main:app --reload")
-
+        run_cmd = "uv run uvicorn main:app --reload"
     elif project_type == "Flask":
-        console.print("  uv run python app.py")
-
+        run_cmd = "uv run python app.py"
     elif project_type == "Django":
-        console.print("  uv run python manage.py runserver")
+        run_cmd = "uv run python manage.py runserver"
+    else:
+        run_cmd = "uv run python main.py"
 
-    elif project_type == "From Scratch":
-        console.print("  uv run python main.py")
+    content = Text()
+    content.append("Project created successfully.\n\n", style="bold green")
+    content.append("Next steps:\n\n", style="bold white")
+    content.append(f"  cd {project_name}\n", style="bright_cyan")
+    content.append(f"  {run_cmd}\n", style="bright_cyan")
 
-    console.print()
+    console.print(Panel(
+        content,
+        border_style="green",
+        padding=(1, 4),
+    ))
