@@ -41,6 +41,38 @@ if __name__ == "__main__":
     main()
 """
 
+ENV_SCRATCH = """\
+APP_ENV=development
+DEBUG=true
+"""
+
+ENV_FASTAPI = """\
+APP_ENV=development
+DEBUG=true
+HOST=127.0.0.1
+PORT=8000
+SECRET_KEY=your_secret_key_here
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+"""
+
+ENV_FLASK = """\
+APP_ENV=development
+FLASK_APP=app.py
+FLASK_ENV=development
+DEBUG=true
+SECRET_KEY=your_secret_key_here
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+"""
+
+ENV_DJANGO = """\
+APP_ENV=development
+DEBUG=true
+SECRET_KEY=your_secret_key_here
+ALLOWED_HOSTS=localhost,127.0.0.1
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+"""
+
+
 
 def write_file(path: Path, content: str):
     path.write_text(content, encoding="utf-8")
@@ -69,6 +101,15 @@ def create_template(project_name: str, project_type: str, test_library: str):
         tests_dir.mkdir(exist_ok=True)
         write_file(tests_dir / "__init__.py", "")
         write_file(tests_dir / "test_main.py", f"# {test_library} tests\n")
+
+    env_templates = {
+        "From Scratch": ENV_SCRATCH,
+        "FastAPI": ENV_FASTAPI,
+        "Flask": ENV_FLASK,
+        "Django": ENV_DJANGO,
+    }
+
+    write_file(project_path / ".env.example", env_templates[project_type])
 
     _print_next_steps(project_name, project_type)
 

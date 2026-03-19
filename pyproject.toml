@@ -24,4 +24,7 @@ members = [
     "tmp/todo",
     "opp",
     "tmp/flask_bot",
+    "tmp/apptodo",
+    "tmp/flask_app",
+    "tmp/app",
 ]
