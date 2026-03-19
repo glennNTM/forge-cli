@@ -28,4 +28,5 @@ members = [
     "tmp/flask_app",
     "tmp/app",
     "tmp/docker_api",
+    "tmp/jnin",
 ]

@@ -4,7 +4,6 @@ from rich.console import Console
 from rich.text import Text
 from rich.panel import Panel
 from rich.align import Align
-from rich.rule import Rule
 
 from forge.commands.new import new
 
@@ -58,22 +57,19 @@ def print_banner():
     ascii_art = pyfiglet.figlet_format("FORGE", font="doom")
     lines = ascii_art.splitlines()
 
-    # Updated to a smooth green gradient
     gradient_colors = [
-        "#B2FF59",  # Light yellow-green
-        "#76FF03",  # Bright lime green
-        "#64DD17",  # Strong green
-        "#00C853",  # Emerald green
-        "#00B050",  # Darker green
-        "#007E33",  # Deep forest green
+        "#B2FF59",
+        "#76FF03",
+        "#64DD17",
+        "#00C853",
+        "#00B050",
+        "#007E33",
     ]
 
     for line in lines:
         console.print(apply_horizontal_gradient(line, gradient_colors))
 
-    # Updated subtitle and rule colors
-    subtitle = Text(" Modern Python project scaffolding ", style="italic #64DD17")
-    console.print(Rule(subtitle, style="#007E33"))
+    console.print(Text(" Modern Python project scaffolding", style="italic #64DD17"))
     console.print()
 
 
@@ -90,10 +86,12 @@ def main(ctx: typer.Context):
         )
         
         panel = Panel(
-            Align.center(welcome_msg), 
+            Align.left(welcome_msg), 
             border_style="#007E33", 
             padding=(1, 4),
-            title="[dim]Getting Started[/dim]"
+            title="[dim]Getting Started[/dim]",
+            title_align="left"
+
         )
         
         console.print(panel)
