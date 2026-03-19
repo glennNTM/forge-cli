@@ -39,3 +39,17 @@ def ask_test_library() -> str:
     )
 
     return TEST_LIBRARIES[int(choice) - 1]
+
+def ask_docker() -> bool:
+    console.print("\n[bold]Do you want to dockerize your app?[/bold]\n")
+    console.print("  [1] Yes")
+    console.print("  [2] No")
+    console.print()
+
+    choice = Prompt.ask(
+        "Select an option",
+        choices=["1", "2"],
+        default="2"
+    )
+
+    return choice == "1"
