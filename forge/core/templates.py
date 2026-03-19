@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
@@ -42,35 +42,34 @@ if __name__ == "__main__":
 """
 
 
-def write_file(path: str, content: str):
-    with open(path, "w") as f:
-        f.write(content)
+def write_file(path: Path, content: str):
+    path.write_text(content, encoding="utf-8")
     console.print(f"  Created [bold]{path}[/bold]")
 
 
 def create_template(project_name: str, project_type: str, test_library: str):
+    project_path = Path.cwd() / project_name
+
     console.print("\nGenerating project files...")
 
     if project_type == "From Scratch":
-        write_file(f"{project_name}/main.py", SCRATCH_MAIN)
+        write_file(project_path / "main.py", SCRATCH_MAIN)
 
     elif project_type == "FastAPI":
-        write_file(f"{project_name}/main.py", FASTAPI_MAIN)
+        write_file(project_path / "main.py", FASTAPI_MAIN)
 
     elif project_type == "Flask":
-        write_file(f"{project_name}/app.py", FLASK_APP)
+        write_file(project_path / "app.py", FLASK_APP)
 
     elif project_type == "Django":
-        # Django genere ses fichiers via django-admin, rien a ajouter
         pass
 
-    if test_library not in ["none"]:
-        tests_dir = f"{project_name}/tests"
-        os.makedirs(tests_dir, exist_ok=True)
-        write_file(f"{tests_dir}/__init__.py", "")
-        write_file(f"{tests_dir}/test_main.py", f"# {test_library} tests\n")
+    if test_library != "none":
+        tests_dir = project_path / "tests"
+        tests_dir.mkdir(exist_ok=True)
+        write_file(tests_dir / "__init__.py", "")
+        write_file(tests_dir / "test_main.py", f"# {test_library} tests\n")
 
-    console.print("\n[bold green]Project created successfully.[/bold green]")
     _print_next_steps(project_name, project_type)
 
 
