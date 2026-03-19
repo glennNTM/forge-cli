@@ -72,6 +72,85 @@ ALLOWED_HOSTS=localhost,127.0.0.1
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 """
 
+DOCKERFILES = {
+    "From Scratch": """\
+FROM python:3.11-slim
+WORKDIR /app
+COPY . .
+RUN pip install uv && uv sync
+CMD ["uv", "run", "python", "main.py"]
+""",
+    "FastAPI": """\
+FROM python:3.11-slim
+WORKDIR /app
+COPY . .
+RUN pip install uv && uv sync
+EXPOSE 8000
+CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+""",
+    "Flask": """\
+FROM python:3.11-slim
+WORKDIR /app
+COPY . .
+RUN pip install uv && uv sync
+EXPOSE 5000
+CMD ["uv", "run", "python", "app.py"]
+""",
+    "Django": """\
+FROM python:3.11-slim
+WORKDIR /app
+COPY . .
+RUN pip install uv && uv sync
+EXPOSE 8000
+CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+""",
+}
+
+DOCKER_COMPOSE = {
+    "From Scratch": """\
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+""",
+    "FastAPI": """\
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+""",
+    "Flask": """\
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+""",
+    "Django": """\
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+""",
+}
+
+DOCKERIGNORE = """\
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.git
+"""
 
 
 def write_file(path: Path, content: str):
@@ -79,20 +158,17 @@ def write_file(path: Path, content: str):
     console.print(f"  Created [bold]{path}[/bold]")
 
 
-def create_template(project_name: str, project_type: str, test_library: str):
+def create_template(project_name: str, project_type: str, test_library: str, use_docker: bool = False):
     project_path = Path.cwd() / project_name
 
     console.print("\nGenerating project files...")
 
     if project_type == "From Scratch":
         write_file(project_path / "main.py", SCRATCH_MAIN)
-
     elif project_type == "FastAPI":
         write_file(project_path / "main.py", FASTAPI_MAIN)
-
     elif project_type == "Flask":
         write_file(project_path / "app.py", FLASK_APP)
-
     elif project_type == "Django":
         pass
 
@@ -111,10 +187,15 @@ def create_template(project_name: str, project_type: str, test_library: str):
 
     write_file(project_path / ".env.example", env_templates[project_type])
 
-    _print_next_steps(project_name, project_type)
+    if use_docker:
+        write_file(project_path / "Dockerfile", DOCKERFILES[project_type])
+        write_file(project_path / "docker-compose.yml", DOCKER_COMPOSE[project_type])
+        write_file(project_path / ".dockerignore", DOCKERIGNORE)
+
+    _print_next_steps(project_name, project_type, use_docker)
 
 
-def _print_next_steps(project_name: str, project_type: str):
+def _print_next_steps(project_name: str, project_type: str, use_docker: bool = False):
     if project_type == "FastAPI":
         run_cmd = "uv run uvicorn main:app --reload"
     elif project_type == "Flask":
@@ -129,6 +210,10 @@ def _print_next_steps(project_name: str, project_type: str):
     content.append("Next steps:\n\n", style="bold white")
     content.append(f"  cd {project_name}\n", style="bright_cyan")
     content.append(f"  {run_cmd}\n", style="bright_cyan")
+
+    if use_docker:
+        content.append("\nDocker:\n\n", style="bold white")
+        content.append("  docker compose up --build\n", style="bright_cyan")
 
     console.print(Panel(
         content,

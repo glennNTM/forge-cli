@@ -6,6 +6,7 @@ requires-python = ">=3.14"
 members = [
     "app",
     "apptodo",
+    "docker-api",
     "flask-app",
     "flask-bot",
     "forge-cli",
@@ -125,6 +126,29 @@ sdist = { url = "https://files.pythonhosted.org/packages/80/e1/894115c6bd70e2c8b
 wheels = [
     { url = "https://files.pythonhosted.org/packages/72/b1/23f2556967c45e34d3d3cf032eb1bd3ef925ee458667fb99052a0b3ea3a6/django-6.0.3-py3-none-any.whl", hash = "sha256:2e5974441491ddb34c3f13d5e7a9f97b07ba03bf70234c0a9c68b79bbb235bc3", size = 8358527, upload-time = "2026-03-03T13:55:10.552Z" },
 ]
+
+[[package]]
+name = "docker-api"
+version = "0.1.0"
+source = { virtual = "tmp/docker_api" }
+dependencies = [
+    { name = "fastapi" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.135.1" },
+    { name = "uvicorn", specifier = ">=0.42.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.0.2" }]
 
 [[package]]
 name = "fastapi"
