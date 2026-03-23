@@ -62,7 +62,7 @@ def run_command(project_name: str, project_type: str, test_library: str):
 
     elif project_type == "Django":
         console.print("Installing Django...")
-        run(["uv", "add", "django"], cwd=project_path)
+        run(["uv", "add", "django",  "python-dotenv"], cwd=project_path)
         run(["uv", "run", "django-admin", "startproject", "core", "."], cwd=project_path)
 
     if test_library not in STDLIB_TEST_LIBS:

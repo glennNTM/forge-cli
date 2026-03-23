@@ -29,4 +29,5 @@ members = [
     "tmp/app",
     "tmp/docker_api",
     "tmp/jnin",
+    "tmp/django_app",
 ]
