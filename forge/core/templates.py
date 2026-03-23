@@ -151,6 +151,40 @@ __pycache__/
 .env
 .git
 """
+DJANGO_DOTENV_SNIPPET = """\
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+DEBUG = os.getenv("DEBUG", "true") == "true"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+"""
+
+def patch_django_settings(project_path: Path):
+    settings_path = project_path / "core" / "settings.py"
+
+    if not settings_path.exists():
+        return
+
+    original = settings_path.read_text(encoding="utf-8")
+
+    # Remplace les lignes SECRET_KEY, DEBUG et ALLOWED_HOSTS par le snippet dotenv
+    patched = []
+    skip_lines = {"SECRET_KEY", "DEBUG", "ALLOWED_HOSTS"}
+    dotenv_inserted = False
+
+    for line in original.splitlines():
+        if any(line.startswith(key) for key in skip_lines):
+            if not dotenv_inserted:
+                patched.append(DJANGO_DOTENV_SNIPPET)
+                dotenv_inserted = True
+        else:
+            patched.append(line)
+
+    settings_path.write_text("\n".join(patched), encoding="utf-8")
+    console.print(f"  Updated [bold]core/settings.py[/bold] with dotenv support")
 
 
 def write_file(path: Path, content: str):
@@ -170,7 +204,7 @@ def create_template(project_name: str, project_type: str, test_library: str, use
     elif project_type == "Flask":
         write_file(project_path / "app.py", FLASK_APP)
     elif project_type == "Django":
-        pass
+        patch_django_settings(project_path)
 
     if test_library != "none":
         tests_dir = project_path / "tests"
