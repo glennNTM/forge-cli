@@ -30,8 +30,8 @@ def interpolate_color(color1: str, color2: str, t: float) -> str:
 
 def apply_horizontal_gradient(line: str, colors: list) -> Text:
     text = Text()
-    visible_chars = [c for c in line if c != " "]
-    total = len(visible_chars)
+    # Après
+    total = sum(1 for c in line if c != " ")
 
     if total == 0:
         text.append(line)
